@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Idli Timer 🍽️</title>
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+</head>
+<body>
+  <div class="container">
+    <h1>🍃 Idli Timer</h1>
+
+    <div class="idli-steamer">
+      <div class="steam" id="steam1"></div>
+      <div class="steam" id="steam2"></div>
+            <div class="steam" id="steam3"></div>
+                  <div class="steam" id="steam4"></div>
+
+      <div class="banana-leaf">
+        <div class="idli-row">
+          <div class="idli"></div>
+          <div class="idli"></div>
+          <div class="idli"></div>
+          <div class="idli"></div>
+        </div>
+      </div>
+    </div>
+
+    <button id="startBtn">Start 7 Minute Timer</button>
+    <div class="timer-display" id="timer">07:00</div>
+
+    <div class="progress-wrapper">
+      <div class="progress-bar" id="progress"></div>
+    </div>
+  </div>
+
+  <!-- Music -->
+  <audio id="bgMusic" loop>
+    <source src="music.mp3" type="audio/mpeg">
+    Your browser does not support the audio element.
+  </audio>
+
+  <!-- Timer Script -->
+  <script>
+    const startBtn = document.getElementById("startBtn");
+    const timerDisplay = document.getElementById("timer");
+    const progressBar = document.getElementById("progress");
+    const bgMusic = document.getElementById("bgMusic");
+
+    let timerRunning = false;
+
+    function startTimer(duration) {
+      let timer = duration;
+      const total = duration;
+
+      const interval = setInterval(() => {
+        const minutes = String(Math.floor(timer / 60)).padStart(2, '0');
+        const seconds = String(timer % 60).padStart(2, '0');
+        timerDisplay.textContent = `${minutes}:${seconds}`;
+
+        const progress = ((total - timer) / total) * 100;
+        progressBar.style.width = progress + "%";
+
+        if (--timer < 0) {
+          clearInterval(interval);
+          timerDisplay.textContent = "Idlis are ready! 🎉";
+          bgMusic.pause();
+          bgMusic.currentTime = 0;
+        }
+      }, 1000);
+    }
+
+    function animateSteam() {
+      gsap.to("#steam1", {
+        y: -40,
+        opacity: 0,
+        duration: 2,
+        repeat: -1,
+        delay: 1,
+        ease: "power1.inOut"
+      });
+      gsap.to("#steam2", {
+        y: -60,
+        opacity: 0,
+        duration: 2,
+        repeat: -1,
+        delay: 1,
+        ease: "power1.inOut"
+      });
+        gsap.to("#steam3", {
+        y: -80,
+        opacity: 0,
+        duration: 2,
+        repeat: -1,
+        ease: "power1.inOut"
+      });
+              gsap.to("#steam4", {
+        y: -100,
+        opacity: 0,
+        duration: 2,
+        repeat: -1,
+        ease: "power1.inOut"
+      });
+    }
+
+    startBtn.addEventListener("click", () => {
+      if (!timerRunning) {
+        startTimer(420); // 7 minutes
+        animateSteam();
+        bgMusic.play();
+        timerRunning = true;
+      }
+    });
+  </script>
+</body>
+</html>
